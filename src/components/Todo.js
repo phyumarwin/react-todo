@@ -13,11 +13,22 @@ const Todo = ({todo, deleteTodo, updateTodo}) => {
     updateTodo(updatedTodo);
     setIsEdit(false);
   }
+
+  const handleCheckBox = () => {
+    // console.log(todo.completed)
+    const updatedTodo = {
+      id : todo.id,
+      title,
+      completed : !todo.completed
+    }
+    updateTodo(updatedTodo)
+  }
+
   return (
       <div>
         <li className="todo-item-container" key={todo.id}>
           <div className="todo-item">
-            <input type="checkbox" />
+            <input type="checkbox" checked={todo.completed} onChange={handleCheckBox}/>
             {!isEdit && <span onDoubleClick={ () => setIsEdit(true)} className={`todo-item-label ${todo.completed ? 'line-through' : ''}`}>
               {todo.title}
             </span>}

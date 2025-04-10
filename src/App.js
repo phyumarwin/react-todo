@@ -70,6 +70,18 @@ function App() {
       })
     })
   }
+
+  const clearCompleted = () => {
+    todoes.forEach(t => {
+      if(t.completed) {
+        deleteTodo(t.id)
+      }
+    })
+    setTodoes((prevState) => {
+      return prevState.filter(t => !t.completed)
+    })
+  }
+
   const remainingCount =  todoes.filter(t => !t.completed).length
 
   return (
@@ -81,7 +93,7 @@ function App() {
         <CheckAllAndRemaining remainingCount={remainingCount} checkAll={checkAll}/>
         <div className="other-buttons-container">
           <TodoFilter/>
-          <ClearCompletedBtn/>
+          <ClearCompletedBtn clearCompleted={clearCompleted}/>
         </div>
       </div>
     </div>
