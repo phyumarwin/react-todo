@@ -41,13 +41,44 @@ function App() {
     })
   }
 
+  const updateTodo = (todo) => {
+    fetch (`http://localhost:3001/todoes/${todo.id}`, {
+      method : "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify( todo ),
+    })
+    setTodoes(prevState => {
+      return prevState.map(t => {
+        if(t.id == todo.id){
+          return todo
+        }
+        return t;
+      })
+    })
+  }
+
+  const checkAll = () => {
+    todoes.forEach(t => {
+      t.completed = true;
+      updateTodo(t)
+    })
+    setTodoes((prevState) => {
+      return prevState.map(t => {
+        return {...t, completed : true };
+      })
+    })
+  }
+  const remainingCount =  todoes.filter(t => !t.completed).length
+
   return (
     <div className="todo-app-container">
       <div className="todo-app">
         <h2>Todo App</h2>
         <TodoForm addTodo={addTodo}/>
-        <TodoesList todoes = {todoes} deleteTodo={deleteTodo}/>
-        <CheckAllAndRemaining/>
+        <TodoesList todoes = {todoes} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
+        <CheckAllAndRemaining remainingCount={remainingCount} checkAll={checkAll}/>
         <div className="other-buttons-container">
           <TodoFilter/>
           <ClearCompletedBtn/>

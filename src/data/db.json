@@ -1,24 +1,19 @@
 {
   "todoes": [
     {
-      "id": 1,
+      "id": "1",
       "title": "My First Todo",
       "completed": true
     },
     {
-      "id": 2,
-      "title": "My Second Todo",
-      "completed": false
-    },
-    {
-      "id": 0.5394139738913215,
+      "id": "0.5394139738913215",
       "title": "To Do Laravel",
-      "completed": false
+      "completed": true
     },
     {
-      "id": 0.7831880752190314,
-      "title": "To Do React",
-      "completed": false
+      "id": "0.7831880752190314",
+      "title": "To Do React JS",
+      "completed": true
     }
   ]
 }
