@@ -5,19 +5,34 @@ import TodoesList from './components/TodoesList.js';
 import CheckAllAndRemaining from './components/CheckAllAndRemaining.js';
 import TodoFilter from './components/TodoFilter.js';
 import ClearCompletedBtn from './components/ClearCompletedBtn.js';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 
 function App() {
   const [todoes, setTodoes] =  useState([]);
+
+  const [filteredTodoes, setFilteredTodoes] = useState(todoes)
 
   useEffect ( () => {
     fetch('http://localhost:3001/todoes')
     .then(res=>res.json())
     .then((todoes) => {
       setTodoes(todoes)
+      setFilteredTodoes(todoes)
     })
   }, []);
+
+  const filterBy = useCallback((filter) => {
+    if(filter == 'All'){
+      setFilteredTodoes(todoes)
+    }
+    if(filter == 'Active'){
+      setFilteredTodoes(todoes.filter(t => !t.completed))
+    }
+    if(filter == 'Completed'){
+      setFilteredTodoes(todoes.filter(t => t.completed))
+    }
+  }, [todoes])
 
   const addTodo = (todo) => {
     fetch ('http://localhost:3001/todoes', {
@@ -89,10 +104,10 @@ function App() {
       <div className="todo-app">
         <h2>Todo App</h2>
         <TodoForm addTodo={addTodo}/>
-        <TodoesList todoes = {todoes} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
+        <TodoesList todoes = {filteredTodoes} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
         <CheckAllAndRemaining remainingCount={remainingCount} checkAll={checkAll}/>
         <div className="other-buttons-container">
-          <TodoFilter/>
+          <TodoFilter filterBy={filterBy}/>
           <ClearCompletedBtn clearCompleted={clearCompleted}/>
         </div>
       </div>
